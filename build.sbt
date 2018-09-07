@@ -20,7 +20,7 @@ lazy val root = (project in file("."))
     sourcesInBase := false
   )
   .settings(commonSettings: _*)
-  .aggregate(coreJVM, coreJS, coreAndroid, desktopAWT, html5, android)
+  .aggregate(html5, desktopAWT, desktopNative, jvmShared, coreJS, coreJVM, coreNative)
 
 
 lazy val core = (crossProject(JSPlatform, JVMPlatform, NativePlatform).crossType(CrossType.Pure) in file("./core"))
@@ -47,21 +47,21 @@ lazy val desktopAWT = (project in file("./desktop-awt"))
   )
   .dependsOn(coreJVM, jvmShared)
 
-def ghProject(repo: String, version: String, name: String) = ProjectRef(uri(s"${repo}#${version}"), name)
-
-val graphicsBindingsCommit = "24206662e972bfc4f77cd3abc38502ea0ce92db0"
-lazy val sdl2 = ghProject("git://github.com/regb/scalanative-graphics-bindings.git", graphicsBindingsCommit, "sdl2")
-lazy val sdl2Image = ghProject("git://github.com/regb/scalanative-graphics-bindings.git", graphicsBindingsCommit, "sdl2Image")
-lazy val opengl = ghProject("git://github.com/regb/scalanative-graphics-bindings.git", graphicsBindingsCommit, "opengl")
 
 lazy val desktopNative = (project in file("./desktop-native"))
   .enablePlugins(ScalaNativePlugin)
   .settings(commonSettings: _*)
   .settings(commonNativeSettings: _*)
   .settings(
-    name := "sgl-desktop-native"
+    name := "sgl-desktop-native",
+    libraryDependencies ++= List(
+      "com.regblanc" %%% "native-sdl2" % "0.1",
+      "com.regblanc" %%% "native-sdl2-image" % "0.1",
+      "com.regblanc" %%% "native-sdl2-ttf" % "0.1",
+      "com.regblanc" %%% "native-opengl" % "0.1"
+    )
   )
-  .dependsOn(coreNative, sdl2, sdl2Image, opengl)
+  .dependsOn(coreNative)
 
 lazy val html5 = (project in file("./html5"))
   .enablePlugins(ScalaJSPlugin)
@@ -75,7 +75,7 @@ lazy val html5 = (project in file("./html5"))
 
 //Android cannot run on Java8 so we stick with 2.11. We
 //need to build core separately for the right version
-
+/*
 val scalaAndroidVer = "2.11.8"
 
 val commonAndroidSettings = Seq(
@@ -128,3 +128,4 @@ lazy val android = (project in file("./android"))
     platformTarget := "android-23"
   )
   .dependsOn(coreAndroid, jvmSharedAndroid)
+*/

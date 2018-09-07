@@ -17,10 +17,10 @@ lazy val commonNativeSettings = Seq(
 lazy val sglCoreJVM = ProjectRef(file("../.."), "coreJVM")
 lazy val sglCoreJS = ProjectRef(file("../.."), "coreJS")
 lazy val sglCoreNative = ProjectRef(file("../.."), "coreNative")
-lazy val sglCoreAndroid = ProjectRef(file("../.."), "coreAndroid")
+//lazy val sglCoreAndroid = ProjectRef(file("../.."), "coreAndroid")
 lazy val sglHtml5 = ProjectRef(file("../.."), "html5")
 lazy val sglDesktop = ProjectRef(file("../.."), "desktopAWT")
-lazy val sglAndroid = ProjectRef(file("../.."), "android")
+//lazy val sglAndroid = ProjectRef(file("../.."), "android")
 lazy val sglNative = ProjectRef(file("../.."), "desktopNative")
 
 lazy val core = (crossProject(JSPlatform, JVMPlatform, NativePlatform).crossType(CrossType.Pure) in file("./core"))
@@ -68,7 +68,7 @@ lazy val native = (project in file("./native"))
       ???
   )
   .dependsOn(sglCoreNative, sglNative, coreNative)
-
+/*
 //Android cannot run on Java8 so we stick with 2.11. We
 //need to build core separately for the right version
 
@@ -115,6 +115,7 @@ lazy val android = (project in file("./android"))
     platformTarget := "android-23"
   )
   .dependsOn(sglCoreAndroid, sglAndroid, coreAndroid)
+  */
 
 lazy val OS = sys.props("os.name").toLowerCase
 lazy val LinuxName = "Linux"
